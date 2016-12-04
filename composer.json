@@ -1,0 +1,21 @@
+{
+  "name": "chf/backend-module",
+  "type": "typo3-cms-extension",
+  "description": "A base extension for TYPO3 backend modules",
+  "authors": [
+    {
+      "name": "Christian Fries",
+      "email": "hallo@christian-fries.ch",
+      "role": "Developer"
+    }
+  ],
+  "license": "GPL-2.0+",
+  "require": {
+    "typo3/cms-core": "^7.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "CHF\\BackendModule\\": "Classes"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-12-03T16:34:24Z" product-name="backend_module">
+		<header/>
+		<body>
+			<trans-unit id="confirm">
+				<source>Are you sure you want to delete this record: %s?</source>
+			</trans-unit>
+			<trans-unit id="configuration.label">
+				<source>Edit configuration</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
