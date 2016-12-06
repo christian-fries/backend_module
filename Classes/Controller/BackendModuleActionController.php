@@ -176,7 +176,15 @@ class BackendModuleActionController extends ActionController {
                     ->setHref($button['href'])
                     ->setTitle($button['title'])
                     ->setIcon($button['icon']);
+
+            if ($button['displayConditions'] === null ||
+                (
+                    array_key_exists($this->request->getControllerName(), $button['displayConditions']) &&
+                    in_array($this->request->getControllerActionName(), $button['displayConditions'][$this->request->getControllerName()]))
+            )
+            {
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, $key);
+            }
         }
 
         if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin())
@@ -205,17 +213,18 @@ class BackendModuleActionController extends ActionController {
      *
      * @param string $table Name of the table
      * @param string $title Title of the button
+     * @param mixed $displayConditions An array configuring display conditions with key as controller name and action as array with actions
      * @param string $iconIdentifier Name of the icon to use. If no icon is defined, the icon of the record will be used.
      * @param string $returnUrl Url to return to after creating new record
      * @return array|null
      */
-    protected function createNewRecordButton($table, $title, $iconIdentifier = null, $returnUrl = null)
+    protected function createNewRecordButton($table, $title, $displayConditions = null, $iconIdentifier = 'actions-document-new', $returnUrl = null)
     {
         if (!GeneralUtility::inList($this->getBackendUser()->groupData['tables_modify'], $table)
             && !$this->getBackendUser()->isAdmin()
         || $this->pageUid === 0) return null;
 
-        $icon = ($iconIdentifier) ? $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL) : $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL);
+        $icon = $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL);
 
         if ($returnUrl === null) {
             $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken($this->moduleName);
@@ -230,21 +239,23 @@ class BackendModuleActionController extends ActionController {
             'type' => 'new',
             'href' => $url,
             'title' => $title,
-            'icon' => $icon
+            'icon' => $icon,
+            'displayConditions' => $displayConditions
         ];
     }
 
     /**
      * Return button to call some extbase action
      *
-     * @param $action Name of the action
-     * @param $controller Name of the controller
-     * @param $title Title of the button
-     * @param $icon Icon of the button
+     * @param string $action Name of the action
+     * @param string $controller Name of the controller
+     * @param string $title Title of the button
+     * @param string $icon Icon of the button
+     * @param mixed $displayConditions An array configuring display conditions with key as controller name and action as array with actions
      * @param array $arguments Arguments to add to the button
      * @return array
      */
-    protected function createActionButton($action, $controller, $title, $icon, $arguments = [])
+    protected function createActionButton($action, $controller, $title, $icon, $displayConditions = null, $arguments = [])
     {
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
@@ -255,7 +266,8 @@ class BackendModuleActionController extends ActionController {
             'type' => 'action',
             'href' => $url,
             'title' => $title,
-            'icon' => $icon
+            'icon' => $icon,
+            'displayConditions' => $displayConditions
         ];
     }
 
