@@ -22,7 +22,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Displays a 'Edit record' button with default icon to remove record
+ * Displays a 'Edit record' button with default icon to edit record
  */
 class EditRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
@@ -69,7 +69,7 @@ class EditRecordViewHelper extends AbstractViewHelper implements CompilableInter
 
         $url = BackendUtility::getModuleUrl('record_edit', $parameters);
 
-        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
+        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:edit')) . '">'
             . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
     }
 }

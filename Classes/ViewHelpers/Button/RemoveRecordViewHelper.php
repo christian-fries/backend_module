@@ -13,7 +13,6 @@ namespace CHF\BackendModule\ViewHelpers\Button;
  ***/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use CHF\ColorManager\Domain\Model\Color;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,6 +75,7 @@ class RemoveRecordViewHelper extends AbstractViewHelper implements CompilableInt
 
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
             . ' data-severity="warning"'
+            . ' title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete')) . '"'
             . ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
             . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'backend_module', [$object->_getProperty($identifier)])) . '" '
             . ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'

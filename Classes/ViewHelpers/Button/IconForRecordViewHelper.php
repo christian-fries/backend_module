@@ -17,14 +17,14 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ViewHelper to show sprite icon for a record
+ * ViewHelper to show sprite icon for a record and ClickMenu
  *
  * # Example: Basic example
  * <code>
- * <bm:buttons.iconForRecord table="tx_myext_domain_model_mymodel" uid="{mymodel.uid}" title="" />
+ * <bm:button.iconForRecord table="tx_myext_domain_model_mymodel" uid="{mymodel.uid}" enableClickMenu="true" />
  * </code>
  * <output>
- * Icon of the record with the given uid
+ * Icon of the record with the given uid and ClickMenu if enabled.
  * </output>
  *
  */
@@ -40,19 +40,23 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
      *
      * @param string $table table name
      * @param int $uid uid of record
-     * @param string $title title
+     * @param boolean $enableClickMenu
      * @return string sprite icon
      */
-    public function render($table, $uid, $title = "")
+    public function render($table, $uid, $enableClickMenu = true)
     {
         $icon = '';
         $row = BackendUtility::getRecord($table, $uid);
         if (is_array($row)) {
             /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $icon = '<span title="' . htmlspecialchars($title) . '">'
+            $icon = '<a title="id=' . $uid . '"';
+            if ($enableClickMenu) {
+                $icon .= 'onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
+            }
+            $icon .= '><span>'
                 . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
-                . '</span>';
+                . '</span></a>';
         }
 
         return $icon;
