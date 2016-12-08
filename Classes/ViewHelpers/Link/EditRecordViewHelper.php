@@ -19,7 +19,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Creates 'Edit record' button with sprite icon to remove color
+ * Creates 'Edit record' link
  */
 class EditRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
@@ -63,6 +63,6 @@ class EditRecordViewHelper extends AbstractViewHelper implements CompilableInter
 
         $url =  BackendUtility::getModuleUrl('record_edit', $parameters);
 
-        return '<a href="' . $url . '">' . $renderChildrenClosure() . '</a>';
+        return '<a href="' . $url . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:edit')) . '">' . $renderChildrenClosure() . '</a>';
     }
 }

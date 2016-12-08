@@ -16,7 +16,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -69,7 +68,7 @@ class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterf
 
         $url = BackendUtility::getModuleUrl('record_edit', $parameters);
 
-        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
+        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:newRecordGeneral')) . '">'
             . $iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
     }
 }

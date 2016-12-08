@@ -124,6 +124,9 @@ class BackendModuleActionController extends ActionController {
 
             $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
 
             $this->createMenu();
             $this->createButtons();
