@@ -52,7 +52,7 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $icon = '<a title="id=' . $uid . '"';
             if ($enableClickMenu) {
-                $icon .= 'onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
+                $icon .= ' onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
             }
             $icon .= '><span>'
                 . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
