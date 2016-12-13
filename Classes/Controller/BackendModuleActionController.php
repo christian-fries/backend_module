@@ -12,6 +12,7 @@ namespace CHF\BackendModule\Controller;
  *
  ***/
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -101,6 +102,11 @@ class BackendModuleActionController extends ActionController {
     protected $showConfigurationButton = false;
 
     /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer;
+
+    /**
      * Function will be called before every other action
      *
      * @return void
@@ -117,21 +123,19 @@ class BackendModuleActionController extends ActionController {
      */
     protected function initializeView(ViewInterface $view)
     {
-        if ($view instanceof BackendTemplateView) {
-            /** @var BackendTemplateView $view */
-            parent::initializeView($view);
-            $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+        /** @var BackendTemplateView $view */
+        parent::initializeView($view);
+        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 
-            $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
+        $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
 
-            $this->createMenu();
-            $this->createButtons();
-            $this->view->assign('T3_THIS_LOCATION', urlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
-        }
+        $this->createMenu();
+        $this->createButtons();
+        $this->view->assign('T3_THIS_LOCATION', urlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
         $this->view->assign('storagePid', $this->pageUid);
         $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl($this->moduleName)));
     }
