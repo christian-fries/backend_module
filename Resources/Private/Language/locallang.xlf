@@ -9,6 +9,15 @@
 			<trans-unit id="configuration.label">
 				<source>Edit configuration</source>
 			</trans-unit>
+			<trans-unit id="extmng.subcategory.storage">
+				<source>Storage</source>
+			</trans-unit>
+			<trans-unit id="extmng.globalStoragePid">
+				<source>Global storage pid:Define a global pid where records are stored. If a pid is set, no pagetree will be shown in the backend module. NOTE: When you change this setting, you have to reload your backend.</source>
+			</trans-unit>
+			<trans-unit id="extmng.showAdministrationModule">
+				<source>Show administration module</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
