@@ -125,16 +125,20 @@ class BackendModuleActionController extends ActionController {
     {
         /** @var BackendTemplateView $view */
         parent::initializeView($view);
-        $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 
-        $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
+        if ($view instanceof BackendTemplateView) {
+            $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 
-        $this->createMenu();
-        $this->createButtons();
+            $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
+
+            $this->createMenu();
+            $this->createButtons();
+        }
+
         $this->view->assign('T3_THIS_LOCATION', urlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
         $this->view->assign('storagePid', $this->pageUid);
         $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl($this->moduleName)));

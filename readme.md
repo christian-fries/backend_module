@@ -12,3 +12,7 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 - Provide PageRenderer as a property of BackendModuleActionController
 - Bugfix for IconForRecord view helper
+
+### Version 0.2.1
+
+- Access BackendTemplateView properties only if view is instance of BackendTemplateView
