@@ -141,7 +141,8 @@ class BackendModuleActionController extends ActionController {
 
         $this->view->assign('T3_THIS_LOCATION', urlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
         $this->view->assign('storagePid', $this->pageUid);
-        $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl($this->moduleName)));
+
+        $this->view->assign('returnUrl', $this->getControllerContextBasedReturnUrl());
     }
 
     /**
@@ -225,11 +226,12 @@ class BackendModuleActionController extends ActionController {
      * @param string $table Name of the table
      * @param string $title Title of the button
      * @param mixed $displayConditions An array configuring display conditions with key as controller name and action as array with actions
+     * @param mixed $returnParameter Parameter to add to the automatic generated return url
+     * @param string $returnUrl Url to return to after creating new record. If defined, $returnParameter will be ignored
      * @param string $iconIdentifier Name of the icon to use. If no icon is defined, the icon of the record will be used.
-     * @param string $returnUrl Url to return to after creating new record
      * @return array|null
      */
-    protected function createNewRecordButton($table, $title, $displayConditions = null, $iconIdentifier = 'actions-document-new', $returnUrl = null)
+    protected function createNewRecordButton($table, $title, $displayConditions = null, $returnParameter = [], $returnUrl = null, $iconIdentifier = 'actions-document-new')
     {
         if (!GeneralUtility::inList($this->getBackendUser()->groupData['tables_modify'], $table)
             && !$this->getBackendUser()->isAdmin()
@@ -238,7 +240,12 @@ class BackendModuleActionController extends ActionController {
         $icon = $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL);
 
         if ($returnUrl === null) {
-            $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken($this->moduleName);
+            if (!empty($returnParameter)) {
+                $returnParameter = [
+                    $this->getFullPluginName() => $returnParameter
+                ];
+            }
+            $returnUrl = $this->getReturnUrl($returnParameter);
         }
 
         $url =  BackendUtility::getModuleUrl('record_edit', [
@@ -341,6 +348,47 @@ class BackendModuleActionController extends ActionController {
         } else {
             return '&moduleToken=' . $token;
         }
+    }
+
+    /**
+     * Get return url based on the current controller context
+     *
+     * @return string
+     */
+    public function getControllerContextBasedReturnUrl()
+    {
+        $parameter = [];
+        if ($this->controllerContext) {
+            $currentRequest = $this->controllerContext->getRequest();
+            $fullPluginName = $this->getFullPluginName();
+            $parameter[$fullPluginName] = [
+                'action' => $currentRequest->getControllerActionName(),
+                'controller' => $currentRequest->getControllerName()
+            ];
+        }
+        $returnUrl = BackendUtility::getModuleUrl($this->moduleName, $parameter);
+
+        return $returnUrl;
+    }
+
+    /**
+     * Get return url
+     *
+     * @param $parameter
+     * @return string
+     */
+    public function getReturnUrl($parameter) {
+        $returnUrl = BackendUtility::getModuleUrl($this->moduleName, $parameter);
+
+        return $returnUrl;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFullPluginName() {
+        $extensionKey = str_replace('_', '', $this->extKey);
+        return 'tx_' . $extensionKey . '_' . strtolower($this->moduleName);
     }
 
     /**
