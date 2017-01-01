@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 
 /**
  * BackendModule Controller
@@ -189,6 +190,10 @@ class BackendModuleActionController extends ActionController {
                     ->setTitle($button['title'])
                     ->setIcon($button['icon']);
 
+            if ($button['type'] === 'clipboard'){
+                $viewButton->setOnClick($button['onClick']);
+            }
+
             if ($button['displayConditions'] === null ||
                 (
                     array_key_exists($this->request->getControllerName(), $button['displayConditions']) &&
@@ -290,6 +295,39 @@ class BackendModuleActionController extends ActionController {
     }
 
     /**
+     * Return button to paste record(s) from clipboard
+     *
+     * @param string $table The name of the table to show the clipboard button for
+     * @param array $displayConditions An array configuring display conditions with key as controller name and action as array with actions
+     * @return array|null
+     */
+    protected function createClipboardButton($table, $displayConditions = null)
+    {
+        $clipBoard = GeneralUtility::makeInstance(Clipboard::class);
+        $clipBoard->initializeClipboard();
+        $elFromTable = $clipBoard->elFromTable($table);
+
+        if (!empty($elFromTable)) {
+            $url = $clipBoard->pasteUrl('', $this->pageUid);
+            $onClick = 'return ' . $clipBoard->confirmMsg('pages', BackendUtility::getRecord('pages', $this->pageUid),
+                    'into', $elFromTable);
+            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_pasteInto');
+            $icon = $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL);
+
+            return [
+                'type' => 'clipboard',
+                'href' => $url,
+                'onClick' => $onClick,
+                'title' => $title,
+                'icon' => $icon,
+                'displayConditions' => $displayConditions
+            ];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Redirect to TCEFORM to create a new record
      *
      * @param string $table table name
@@ -300,7 +338,7 @@ class BackendModuleActionController extends ActionController {
     {
         if (!isset($this->moduleName))
         {
-            throw new \Exception('The module name is not defined. Define $this->moduleName in the initializeAction mehtod in your controller extending the BackendActionController.', '1471456225');
+            throw new \Exception('The module name is not defined. Define $this->moduleName in the initializeAction method in your controller extending the BackendActionController.', '1471456225');
         }
 
         $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken($this->moduleName);
