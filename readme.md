@@ -4,6 +4,11 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+### Version 0.4.0
+
+- Add button type clipboard for pasting records from the clipboard
+- Change icon of extension
+
 ### Version 0.3.0
 
 - Add BackendSession object to store user settings
