@@ -13,6 +13,7 @@ namespace CHF\BackendModule\Controller;
  ***/
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -131,7 +132,11 @@ class BackendModuleActionController extends ActionController {
             $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 
             $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
+                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            } else {
+                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            }
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
