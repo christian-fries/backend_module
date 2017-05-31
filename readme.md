@@ -4,6 +4,10 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+### Version 0.5.0
+
+- Compatibility for TYPO3 8
+
 ### Version 0.4.0
 
 - Add button type clipboard for pasting records from the clipboard
