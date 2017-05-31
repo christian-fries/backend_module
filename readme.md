@@ -4,6 +4,10 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+### Version 0.5.1
+
+- Compatibility for TYPO3 8 && TYPO3 7 (loading different js files with requireJS) 
+
 ### Version 0.5.0
 
 - Compatibility for TYPO3 8
