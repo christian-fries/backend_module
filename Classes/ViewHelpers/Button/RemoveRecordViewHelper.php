@@ -1,4 +1,5 @@
 <?php
+
 namespace CHF\BackendModule\ViewHelpers\Button;
 
 /***
@@ -27,6 +28,12 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class RemoveRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Render link with sprite icon to remove record
      *

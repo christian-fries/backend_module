@@ -1,4 +1,5 @@
 <?php
+
 namespace CHF\BackendModule\ViewHelpers\Button;
 
 /***

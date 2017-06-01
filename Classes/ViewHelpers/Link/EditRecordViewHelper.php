@@ -24,6 +24,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 class EditRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Returns a URL to link to FormEngine
      *
      * @param AbstractDomainObject $object Object to edit

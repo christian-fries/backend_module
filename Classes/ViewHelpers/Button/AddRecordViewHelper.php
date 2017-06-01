@@ -1,4 +1,5 @@
 <?php
+
 namespace CHF\BackendModule\ViewHelpers\Button;
 
 /***
@@ -25,6 +26,12 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /**
      * Returns a URL to link to FormEngine
      *
