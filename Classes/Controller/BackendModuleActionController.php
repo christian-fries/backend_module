@@ -193,7 +193,8 @@ class BackendModuleActionController extends ActionController {
             $viewButton = $buttonBar->makeLinkButton()
                     ->setHref($button['href'])
                     ->setTitle($button['title'])
-                    ->setIcon($button['icon']);
+                    ->setIcon($button['icon'])
+                    ->setDataAttributes($button['dataAttributes']);
 
             if ($button['type'] === 'clipboard'){
                 $viewButton->setOnClick($button['onClick']);
@@ -239,9 +240,10 @@ class BackendModuleActionController extends ActionController {
      * @param mixed $returnParameter Parameter to add to the automatic generated return url
      * @param string $returnUrl Url to return to after creating new record. If defined, $returnParameter will be ignored
      * @param string $iconIdentifier Name of the icon to use. If no icon is defined, the icon of the record will be used.
+     * @param array $dataAttributes The data attributes to add to the button
      * @return array|null
      */
-    protected function createNewRecordButton($table, $title, $displayConditions = null, $returnParameter = [], $returnUrl = null, $iconIdentifier = 'actions-document-new')
+    protected function createNewRecordButton($table, $title, $displayConditions = null, $returnParameter = [], $returnUrl = null, $iconIdentifier = 'actions-document-new', $dataAttributes = [])
     {
         if (!GeneralUtility::inList($this->getBackendUser()->groupData['tables_modify'], $table)
             && !$this->getBackendUser()->isAdmin()
@@ -268,6 +270,7 @@ class BackendModuleActionController extends ActionController {
             'href' => $url,
             'title' => $title,
             'icon' => $icon,
+            'dataAttributes' => $dataAttributes,
             'displayConditions' => $displayConditions
         ];
     }
@@ -281,9 +284,10 @@ class BackendModuleActionController extends ActionController {
      * @param string $icon Icon of the button
      * @param mixed $displayConditions An array configuring display conditions with key as controller name and action as array with actions
      * @param array $arguments Arguments to add to the button
+     * @param array $dataAttributes The data attributes to add to the button
      * @return array
      */
-    protected function createActionButton($action, $controller, $title, $icon, $displayConditions = null, $arguments = [])
+    protected function createActionButton($action, $controller, $title, $icon, $displayConditions = null, $arguments = [], $dataAttributes = [])
     {
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
@@ -295,6 +299,7 @@ class BackendModuleActionController extends ActionController {
             'href' => $url,
             'title' => $title,
             'icon' => $icon,
+            'dataAttributes' => $dataAttributes,
             'displayConditions' => $displayConditions
         ];
     }
@@ -304,9 +309,10 @@ class BackendModuleActionController extends ActionController {
      *
      * @param string $table The name of the table to show the clipboard button for
      * @param array $displayConditions An array configuring display conditions with key as controller name and action as array with actions
+     * @param array $dataAttributes The data attributes to add to the button
      * @return array|null
      */
-    protected function createClipboardButton($table, $displayConditions = null)
+    protected function createClipboardButton($table, $displayConditions = null, $dataAttributes = [])
     {
         $clipBoard = GeneralUtility::makeInstance(Clipboard::class);
         $clipBoard->initializeClipboard();
@@ -325,6 +331,7 @@ class BackendModuleActionController extends ActionController {
                 'onClick' => $onClick,
                 'title' => $title,
                 'icon' => $icon,
+                'dataAttributes' => $dataAttributes,
                 'displayConditions' => $displayConditions
             ];
         } else {
