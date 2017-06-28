@@ -4,6 +4,14 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+### Version 0.7.0
+
+- Show flash message if no storage pid is defined
+
+        You don't have to create this flash message manually anymore
+
+- Add german translation for common labels
+
 ### Version 0.6.1
 
 - Use ContextMenu instead of removed ClickMenu in TYPO3 8
