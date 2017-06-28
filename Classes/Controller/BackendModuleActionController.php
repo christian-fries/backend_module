@@ -340,6 +340,27 @@ class BackendModuleActionController extends ActionController {
     }
 
     /**
+     * Return button to trigger JS action
+     *
+     * @param string $title Title of the button
+     * @param string $icon Icon of the button
+     * @param array $dataAttributes The data attributes to add to the button
+     * @param array $displayConditions An array configuring display conditions with key as controller name and action as array with actions
+     * @return array|null
+     */
+    protected function createJsButton($title, $icon, $dataAttributes = [], $displayConditions = null)
+    {
+        return [
+            'type' => 'js',
+            'href' => '#',
+            'title' => $title,
+            'icon' => $icon,
+            'dataAttributes' => $dataAttributes,
+            'displayConditions' => $displayConditions
+        ];
+    }
+
+    /**
      * Redirect to TCEFORM to create a new record
      *
      * @param string $table table name
