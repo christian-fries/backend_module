@@ -4,6 +4,10 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+### Version 0.6.1
+
+- Use ContextMenu instead of removed ClickMenu in TYPO3 8
+
 ### Version 0.6.0
 
 - Add new button type _JS button_
