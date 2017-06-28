@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 /**
  * BackendModule Controller
@@ -117,6 +119,19 @@ class BackendModuleActionController extends ActionController {
     {
         $this->pageUid = $this->settings['storagePid'];
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+        // Show flash message if no storage pid defined
+        if ($this->pageUid == 0) {
+            $message = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.description'),
+                $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.title'),
+                FlashMessage::WARNING, true);
+
+            $flashMessageService = $this->objectManager->get(FlashMessageService::class);
+            $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $messageQueue->addMessage($message);
+        }
+
         parent::initializeAction();
     }
 
