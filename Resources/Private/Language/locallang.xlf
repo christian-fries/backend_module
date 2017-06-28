@@ -9,6 +9,12 @@
 			<trans-unit id="configuration.label">
 				<source>Edit configuration</source>
 			</trans-unit>
+			<trans-unit id="configuration.pid.title">
+				<source>No storage folder defined</source>
+			</trans-unit>
+			<trans-unit id="configuration.pid.description">
+				<source>You can't create new records because there is no storage folder defined. Set the storage folder in the extension configuration.</source>
+			</trans-unit>
 			<trans-unit id="extmng.subcategory.storage">
 				<source>Storage</source>
 			</trans-unit>
