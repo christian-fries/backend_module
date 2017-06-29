@@ -117,7 +117,10 @@ class BackendModuleActionController extends ActionController {
      */
     public function initializeAction()
     {
-        $this->pageUid = $this->settings['storagePid'];
+        // Set storage pid from settings if defined
+        if (intval($this->settings['storagePid']) !== 0) {
+            $this->pageUid = intval($this->settings['storagePid']);
+        }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // Show flash message if no storage pid defined
