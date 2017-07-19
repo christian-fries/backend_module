@@ -4,6 +4,10 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 
 ## Change log
 
+
+### Version 0.7.2
+- Add viewhelpers for generating links to edit/remove records which are not objects
+
 ### Version 0.7.1
 - Set storage pid from settings only if it is defined
 
