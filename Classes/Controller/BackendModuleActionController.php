@@ -158,6 +158,8 @@ class BackendModuleActionController extends ActionController {
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
 
             $this->createMenu();
             $this->createButtons();
