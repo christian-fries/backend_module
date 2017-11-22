@@ -39,15 +39,17 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
      * @param AbstractDomainObject $object Object to hide
      * @param string $table The name of the table of the object
      * @param string $returnUrl The url to return to after hiding record
+     * @param string $disableField $field with disable flag, default hidden (but in fe_user table for example it's "disable")
      * @return string
      */
-    public function render(AbstractDomainObject $object, $table, $returnUrl)
+    public function render(AbstractDomainObject $object, $table, $returnUrl, $disableField = 'hidden')
     {
         return static::renderStatic(
             [
                 'object' => $object,
                 'table' => $table,
-                'returnUrl' => $returnUrl
+                'returnUrl' => $returnUrl,
+                'disableField' => $disableField
             ],
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -65,6 +67,7 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
         /** @var AbstractDomainObject $object */
         $object = $arguments['object'];
         $table = $arguments['table'];
+        $disableField = $arguments['disableField'];
 
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -72,8 +75,11 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
         $labelUnhide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide'));
         $labelHide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide'));
 
-        if ($object->getHidden() === 1) {
-            $params = 'data[' . $table . '][' . $object->getUid() . '][hidden]=0';
+        $getMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($disableField);
+        $setMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($disableField);
+
+        if ($object->$getMethod() === 1) {
+            $params = 'data[' . $table . '][' . $object->getUid() . ']['.$disableField.']=0';
             return '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
                 . ' data-params="' . htmlspecialchars($params) . '"'
                 . ' title="' . $labelUnhide . '"'
@@ -81,7 +87,7 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
                 . ' data-toggle-title="' . $labelHide . '">'
                 . $iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
-            $params = 'data[' . $table . '][' . $object->getUid() . '][hidden]=1';
+            $params = 'data[' . $table . '][' . $object->getUid() . ']['.$disableField.']=1';
             return '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
                 . ' data-params="' . htmlspecialchars($params) . '"'
                 . ' title="' . $labelHide . '"'
