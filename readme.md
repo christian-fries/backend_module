@@ -5,6 +5,9 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 ## Change log
 
 
+### Version 0.7.4
+- Add possibility to set the "hidden" field dynamicly, so for example an fe_user record with the hidden-field "disable" can be disabled
+
 ### Version 0.7.3
 - Add viewhelper for generating hide/unhide button
 
