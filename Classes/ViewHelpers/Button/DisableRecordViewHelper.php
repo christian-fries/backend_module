@@ -78,7 +78,7 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
         $getMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($disableField);
         $setMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($disableField);
 
-        if ($object->$getMethod() === 1) {
+        if ($object->$getMethod() === 1 || $object->$getMethod() === true) {
             $params = 'data[' . $table . '][' . $object->getUid() . ']['.$disableField.']=0';
             return '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
                 . ' data-params="' . htmlspecialchars($params) . '"'
