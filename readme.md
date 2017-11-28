@@ -5,6 +5,9 @@ This TYPO3 extension add some view helpers and convenience methods for TYPO3 bac
 ## Change log
 
 
+### Version 0.7.6
+- Use old language service in TYPO3 7.6
+
 ### Version 0.7.5
 - Bugfix in viewhelper "disableRecord"
 
