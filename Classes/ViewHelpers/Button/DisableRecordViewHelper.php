@@ -72,8 +72,13 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        $labelUnhide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide'));
-        $labelHide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide'));
+        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
+            $labelUnhide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:unHide'));
+            $labelHide = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:hide'));
+        } else {
+            $labelUnhide = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide'));
+            $labelHide = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:hide'));
+        }
 
         $getMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($disableField);
         $setMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($disableField);
