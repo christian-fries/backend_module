@@ -1,17 +1,5 @@
 <?php
-
 namespace CHF\BackendModule\ViewHelpers\Button;
-
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -27,7 +15,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class DisableRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
     /**
      * @var bool
      */
@@ -80,27 +67,24 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
             $labelHide = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:hide'));
         }
 
-        $getMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($disableField);
-        $setMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($disableField);
+        $getMethod = 'get' . GeneralUtility::underscoredToUpperCamelCase($disableField);
+        $setMethod = 'set' . GeneralUtility::underscoredToUpperCamelCase($disableField);
 
         if ($object->$getMethod() === 1 || $object->$getMethod() === true) {
-            $params = 'data[' . $table . '][' . $object->getUid() . ']['.$disableField.']=0';
+            $params = 'data[' . $table . '][' . $object->getUid() . '][' . $disableField . ']=0';
             return '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
                 . ' data-params="' . htmlspecialchars($params) . '"'
                 . ' title="' . $labelUnhide . '"'
                 . ' data-original-title="' . $labelUnhide . '"'
                 . ' data-toggle-title="' . $labelHide . '">'
                 . $iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '</a>';
-        } else {
-            $params = 'data[' . $table . '][' . $object->getUid() . ']['.$disableField.']=1';
-            return '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
+        }
+        $params = 'data[' . $table . '][' . $object->getUid() . '][' . $disableField . ']=1';
+        return '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
                 . ' data-params="' . htmlspecialchars($params) . '"'
                 . ' title="' . $labelHide . '"'
                 . ' data-originaltitle="' . $labelHide . '"'
                 . ' data-toggle-title="' . $labelUnhide . '">'
                 . $iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '</a>';
-        }
-
     }
-
 }

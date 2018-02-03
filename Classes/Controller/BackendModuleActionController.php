@@ -1,43 +1,32 @@
 <?php
 namespace CHF\BackendModule\Controller;
 
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
-
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * BackendModule Controller
  *
  * Extend this controller to get convenience methods for backend modules
  */
-class BackendModuleActionController extends ActionController {
-
+class BackendModuleActionController extends ActionController
+{
     /**
      * @var int
      */
@@ -112,8 +101,6 @@ class BackendModuleActionController extends ActionController {
 
     /**
      * Function will be called before every other action
-     *
-     * @return void
      */
     public function initializeAction()
     {
@@ -125,10 +112,13 @@ class BackendModuleActionController extends ActionController {
 
         // Show flash message if no storage pid defined
         if ($this->pageUid == 0) {
-            $message = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $message = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.description'),
                 $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.title'),
-                FlashMessage::WARNING, true);
+                FlashMessage::WARNING,
+                true
+            );
 
             $flashMessageService = $this->objectManager->get(FlashMessageService::class);
             $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -173,8 +163,6 @@ class BackendModuleActionController extends ActionController {
 
     /**
      * Create menu for backend module
-     *
-     * @return void
      */
     protected function createMenu()
     {
@@ -198,8 +186,6 @@ class BackendModuleActionController extends ActionController {
 
     /**
      * Create the panel of buttons for the backend module
-     *
-     * @return void
      */
     protected function createButtons()
     {
@@ -208,7 +194,9 @@ class BackendModuleActionController extends ActionController {
         $uriBuilder->setRequest($this->request);
 
         foreach ($this->buttons as $key => $button) {
-            if ($button === null) continue;
+            if ($button === null) {
+                continue;
+            }
 
             $viewButton = $buttonBar->makeLinkButton()
                     ->setHref($button['href'])
@@ -216,22 +204,21 @@ class BackendModuleActionController extends ActionController {
                     ->setIcon($button['icon'])
                     ->setDataAttributes($button['dataAttributes']);
 
-            if ($button['type'] === 'clipboard'){
+            if ($button['type'] === 'clipboard') {
                 $viewButton->setOnClick($button['onClick']);
             }
 
             if ($button['displayConditions'] === null ||
                 (
                     array_key_exists($this->request->getControllerName(), $button['displayConditions']) &&
-                    in_array($this->request->getControllerActionName(), $button['displayConditions'][$this->request->getControllerName()]))
-            )
-            {
+                    in_array($this->request->getControllerActionName(), $button['displayConditions'][$this->request->getControllerName()])
+                )
+            ) {
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, $key);
             }
         }
 
-        if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin())
-        {
+        if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin()) {
             $configurationLink = BackendUtility::getModuleUrl('tools_ExtensionmanagerExtensionmanager', [
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
                     'action' => 'showConfigurationForm',
@@ -245,8 +232,10 @@ class BackendModuleActionController extends ActionController {
             $configurationButton = $buttonBar->makeLinkButton()
                 ->setHref($configurationLink . '&returnUrl=' . $returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.label'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-system-extension-configure',
-                    Icon::SIZE_SMALL));
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
+                    'actions-system-extension-configure',
+                    Icon::SIZE_SMALL
+                ));
             $buttonBar->addButton($configurationButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
     }
@@ -267,7 +256,9 @@ class BackendModuleActionController extends ActionController {
     {
         if (!GeneralUtility::inList($this->getBackendUser()->groupData['tables_modify'], $table)
             && !$this->getBackendUser()->isAdmin()
-        || $this->pageUid === 0) return null;
+        || $this->pageUid === 0) {
+            return null;
+        }
 
         $icon = $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL);
 
@@ -340,8 +331,12 @@ class BackendModuleActionController extends ActionController {
 
         if (!empty($elFromTable)) {
             $url = $clipBoard->pasteUrl('', $this->pageUid);
-            $onClick = 'return ' . $clipBoard->confirmMsg('pages', BackendUtility::getRecord('pages', $this->pageUid),
-                    'into', $elFromTable);
+            $onClick = 'return ' . $clipBoard->confirmMsg(
+                'pages',
+                BackendUtility::getRecord('pages', $this->pageUid),
+                    'into',
+                $elFromTable
+            );
             $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_pasteInto');
             $icon = $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL);
 
@@ -354,9 +349,8 @@ class BackendModuleActionController extends ActionController {
                 'dataAttributes' => $dataAttributes,
                 'displayConditions' => $displayConditions
             ];
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -385,12 +379,10 @@ class BackendModuleActionController extends ActionController {
      *
      * @param string $table table name
      * @throws \Exception
-     * @return void
      */
     protected function redirectToCreateNewRecord($table)
     {
-        if (!isset($this->moduleName))
-        {
+        if (!isset($this->moduleName)) {
             throw new \Exception('The module name is not defined. Define $this->moduleName in the initializeAction method in your controller extending the BackendActionController.', '1471456225');
         }
 
@@ -407,12 +399,10 @@ class BackendModuleActionController extends ActionController {
      *
      * @param string $table table name
      * @throws \Exception
-     * @return void
      */
     protected function redirectToEditRecord($table, $recordId)
     {
-        if (!isset($this->moduleName))
-        {
+        if (!isset($this->moduleName)) {
             throw new \Exception('The module name is not defined. Define $this->moduleName in the initializeAction mehtod in your controller extending the BackendActionController.', '1471456225');
         }
 
@@ -436,9 +426,8 @@ class BackendModuleActionController extends ActionController {
         $token = FormProtectionFactory::get()->generateToken('moduleCall', $moduleName);
         if ($tokenOnly) {
             return $token;
-        } else {
-            return '&moduleToken=' . $token;
         }
+        return '&moduleToken=' . $token;
     }
 
     /**
@@ -468,7 +457,8 @@ class BackendModuleActionController extends ActionController {
      * @param $parameter
      * @return string
      */
-    public function getReturnUrl($parameter) {
+    public function getReturnUrl($parameter)
+    {
         $returnUrl = BackendUtility::getModuleUrl($this->moduleName, $parameter);
 
         return $returnUrl;
@@ -477,7 +467,8 @@ class BackendModuleActionController extends ActionController {
     /**
      * @return string
      */
-    private function getFullPluginName() {
+    private function getFullPluginName()
+    {
         $extensionKey = str_replace('_', '', $this->extKey);
         return 'tx_' . $extensionKey . '_' . strtolower($this->moduleName);
     }
@@ -485,7 +476,8 @@ class BackendModuleActionController extends ActionController {
     /**
      * @param $menuIdentifier
      */
-    public function setMenuIdentifier($menuIdentifier) {
+    public function setMenuIdentifier($menuIdentifier)
+    {
         $this->menuIdentifier = $menuIdentifier;
     }
 

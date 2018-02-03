@@ -1,17 +1,6 @@
 <?php
-
 namespace CHF\BackendModule\ViewHelpers\Button;
 
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -28,7 +17,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * <output>
  * Icon of the record with the given uid and ClickMenu if enabled.
  * </output>
- *
  */
 class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
@@ -42,8 +30,8 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
      *
      * @param string $table table name
      * @param int $uid uid of record
-     * @param boolean $enableContextMenu Whether or not the context menu should be opened when clicking on the icon
-     * @param boolean $enableClickMenu Deprecated, use enableContextMenu instead. Will be removed in a future release.
+     * @param bool $enableContextMenu Whether or not the context menu should be opened when clicking on the icon
+     * @param bool $enableClickMenu Deprecated, use enableContextMenu instead. Will be removed in a future release.
      * @return string sprite icon
      */
     public function render($table, $uid, $enableContextMenu = true, $enableClickMenu = true)
@@ -62,8 +50,7 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
             if ($enableContextMenu) {
                 if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
                     $iconTag .= ' class="t3js-contextmenutrigger" data-table="' . $table . '" data-uid="' . $uid . '"';
-                }
-                else {
+                } else {
                     $iconTag .= ' onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
                 }
             }

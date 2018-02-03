@@ -1,5 +1,4 @@
 <?php
-
 namespace CHF\BackendModule\Traits;
 
 trait HiddenTrait

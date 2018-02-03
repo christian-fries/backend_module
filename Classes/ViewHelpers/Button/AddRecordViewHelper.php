@@ -1,17 +1,5 @@
 <?php
-
 namespace CHF\BackendModule\ViewHelpers\Button;
-
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -26,7 +14,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
     /**
      * @var bool
      */

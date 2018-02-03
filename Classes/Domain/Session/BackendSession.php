@@ -1,21 +1,10 @@
 <?php
 namespace CHF\BackendModule\Domain\Session;
 
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
-
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
-class BackendSession {
-
+class BackendSession
+{
     /**
      * The backend session object
      *
@@ -31,15 +20,11 @@ class BackendSession {
      */
     protected $storageKey = 'backend_module';
 
-
     public function __construct()
     {
         $this->sessionObject = $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return void
-     */
     public function setStorageKey($storageKey)
     {
         $this->storageKey = $storageKey;
@@ -50,7 +35,6 @@ class BackendSession {
      *
      * @param string $key
      * @param mixed $value
-     * @return void
      */
     public function store($key, $value)
     {
@@ -63,7 +47,6 @@ class BackendSession {
      * Delete a value from the session
      *
      * @param string $key
-     * @return void
      */
     public function delete($key)
     {

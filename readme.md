@@ -1,9 +1,11 @@
 # backend_module
 
-This TYPO3 extension add some view helpers and convenience methods for TYPO3 backend modules.
+This TYPO3 extension provides view helpers and traits as a foundation to quickly build TYPO3 backend modules.
 
 ## Change log
 
+### dev-master
+- Add UidTrait, PidTrait, HiddenTrait and TimestampableTrait to easily add TYPO3 specific properties to models 
 
 ### Version 0.7.6
 - Use old language service in TYPO3 7.6

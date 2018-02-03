@@ -1,17 +1,6 @@
 <?php
 namespace CHF\BackendModule\ViewHelpers\Button;
 
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
-
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -25,7 +14,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableInterface
 {
-
     /**
      * @var bool
      */
@@ -34,7 +22,7 @@ class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableI
     /**
      * Returns a URL to link to FormEngine
      *
-     * @param integer $record Uid of the record to edit
+     * @param int $record Uid of the record to edit
      * @param string $table The name of the table of the object
      * @param string $returnUrl The url to return to after editing record
      * @return string

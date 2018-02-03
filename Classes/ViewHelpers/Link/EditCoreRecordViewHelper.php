@@ -1,17 +1,6 @@
 <?php
 namespace CHF\BackendModule\ViewHelpers\Link;
 
-/***
- *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2016 Christian Fries <hallo@christian-fries.ch>
- *
- ***/
-
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -30,7 +19,7 @@ class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableI
     /**
      * Returns a URL to link to FormEngine
      *
-     * @param integer $record Record to edit
+     * @param int $record Record to edit
      * @param string $table The name of the table of the object
      * @param string $returnUrl The url to return to after editing record
      * @return string
