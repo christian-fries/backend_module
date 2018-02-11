@@ -7,10 +7,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Christian Fries',
     'author_email' => 'hello@christian-fries.ch',
     'state' => 'stable',
-    'version' => '0.7.6',
+    'version' => '0.8.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.0-8.7.99',
+            'typo3' => '7.6.0-9.1.99',
         ],
         'conflicts' => [],
         'suggests' => [],

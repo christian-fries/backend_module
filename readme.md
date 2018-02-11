@@ -4,7 +4,7 @@ This TYPO3 extension provides view helpers and traits as a foundation to quickly
 
 ## Change log
 
-### dev-master
+### Version 0.8.0
 - Add UidTrait, PidTrait, HiddenTrait and TimestampableTrait to easily add TYPO3 specific properties to models
 - Require typo3/minimal instead of typo3/cms
 
