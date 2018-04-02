@@ -1,26 +1,10 @@
 <?php
 namespace CHF\BackendModule\Traits;
 
+/**
+ * @deprecated Use Hideable instead. This trait will be removed in the next major version.
+ */
 trait HiddenTrait
 {
-    /**
-     * @var bool
-     */
-    protected $hidden;
-
-    /**
-     * @return bool
-     */
-    public function getHidden()
-    {
-        return $this->hidden;
-    }
-
-    /**
-     * @param bool $hidden
-     */
-    public function setHidden($hidden)
-    {
-        $this->hidden = $hidden;
-    }
+    use Hideable;
 }

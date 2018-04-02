@@ -1,26 +1,10 @@
 <?php
 namespace CHF\BackendModule\Traits;
 
+/**
+ * @deprecated Use UidAware instead. This trait will be removed in the next major version.
+ */
 trait UidTrait
 {
-    /**
-     * @var int
-     */
-    protected $uid;
-
-    /**
-     * @return int
-     */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-
-    /**
-     * @param int $uid
-     */
-    public function setUid($uid)
-    {
-        $this->uid = $uid;
-    }
+    use UidAware;
 }
