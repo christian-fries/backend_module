@@ -4,14 +4,12 @@ This TYPO3 extension provides view helpers and traits as a foundation to quickly
 
 ## Change log
 
-### Version dev-master
+### Version 0.9.0
 - Register arguments of view helpers
 - Add traits UidAware, PidAware, Hideable, Deletable and Timestampable to easyly add TYPO3 specific properties to domain models. Deprecate old traits.
-- Require typo3/cms-core instead of typo3/minimal
 
 ### Version 0.8.0
 - Add UidTrait, PidTrait, HiddenTrait and TimestampableTrait to easily add TYPO3 specific properties to models
-- Require typo3/minimal instead of typo3/cms
 
 ### Version 0.7.6
 - Use old language service in TYPO3 7.6
