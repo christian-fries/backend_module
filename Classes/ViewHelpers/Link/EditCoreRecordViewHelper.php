@@ -2,14 +2,14 @@
 namespace CHF\BackendModule\ViewHelpers\Link;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Creates 'Edit record' link
  */
-class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+class EditCoreRecordViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -17,38 +17,24 @@ class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableI
     protected $escapeOutput = false;
 
     /**
-     * Returns a URL to link to FormEngine
-     *
-     * @param int $record Record to edit
-     * @param string $table The name of the table of the object
-     * @param string $returnUrl The url to return to after editing record
-     * @return string
+     * Initialize arguments.
      */
-    public function render($record, $table, $returnUrl)
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'record' => $record,
-                'table' => $table,
-                'returnUrl' => $returnUrl
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('record', 'int', 'Uid of the record to edit.', true);
+        $this->registerArgument('table', 'string', 'The table name of the record to edit.', true);
+        $this->registerArgument('returnUrl', 'string', 'The return url.', true);
     }
 
     /**
-     * @param array $arguments
-     * @param callable $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $record = $arguments['record'];
-        $table = $arguments['table'];
-        $returnUrl = $arguments['returnUrl'];
+        $record = $this->arguments['record'];
+        $table = $this->arguments['table'];
+        $returnUrl = $this->arguments['returnUrl'];
         $parameters = [
             rawurldecode('edit[' . $table . '][' . $record . ']') => 'edit',
             'returnUrl' => rawurldecode($returnUrl)
@@ -56,6 +42,12 @@ class EditCoreRecordViewHelper extends AbstractViewHelper implements CompilableI
 
         $url =  BackendUtility::getModuleUrl('record_edit', $parameters);
 
-        return '<a href="' . $url . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:edit')) . '">' . $renderChildrenClosure() . '</a>';
+        if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
+            $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
+        } else {
+            $title = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:edit'));
+        }
+
+        return '<a href="' . $url . '" title="' . $title . '">' . $this->renderChildren() . '</a>';
     }
 }

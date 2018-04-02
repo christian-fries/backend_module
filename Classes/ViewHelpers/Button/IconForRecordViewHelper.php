@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * ViewHelper to show sprite icon for a record and ClickMenu
@@ -18,7 +19,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * Icon of the record with the given uid and ClickMenu if enabled.
  * </output>
  */
-class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+class IconForRecordViewHelper extends AbstractBackendViewHelper
 {
     /**
      * @var bool
@@ -26,16 +27,26 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
     protected $escapeOutput = false;
 
     /**
-     * Render the sprite icon
-     *
-     * @param string $table table name
-     * @param int $uid uid of record
-     * @param bool $enableContextMenu Whether or not the context menu should be opened when clicking on the icon
-     * @param bool $enableClickMenu Deprecated, use enableContextMenu instead. Will be removed in a future release.
-     * @return string sprite icon
+     * Initialize arguments.
      */
-    public function render($table, $uid, $enableContextMenu = true, $enableClickMenu = true)
+    public function initializeArguments()
     {
+        parent::initializeArguments();
+        $this->registerArgument('table', 'string', 'The table name of the record.', true);
+        $this->registerArgument('uid', 'int', 'The uid of the record.', true);
+        $this->registerArgument('enableContextMenu', 'bool', 'Wheter or not the context menu should be opend when clicking the icon.', false, true);
+    }
+
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $table = $this->arguments['table'];
+        $uid = $this->arguments['uid'];
+        $enableContextMenu = $this->arguments['enableContextMenu'];
+        $enableClickMenu = $this->arguments['enableClickMenu'];
+
         // Compatibility for TYPO3 7: Check enableClickMenu param
         if (!$enableContextMenu && !$enableClickMenu) {
             $enableContextMenu = false;
@@ -54,9 +65,8 @@ class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
                     $iconTag .= ' onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
                 }
             }
-            $iconTag .= '><span>'
-                . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
-                . '</span></a>';
+            $icon = $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
+            $iconTag .= '><span>' . $icon . '</span></a>';
         }
 
         return $iconTag;

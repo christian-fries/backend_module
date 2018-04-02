@@ -5,15 +5,14 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays a 'Delete record' button with sprite icon to remove record
  */
-class RemoveCoreRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+class RemoveCoreRecordViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -21,41 +20,26 @@ class RemoveCoreRecordViewHelper extends AbstractViewHelper implements Compilabl
     protected $escapeOutput = false;
 
     /**
-     * Render link with sprite icon to remove record
-     *
-     * @param int $record Uid of the record to remove
-     * @param string $table The name of the table of the object
-     * @param string $identifier The name of the property identifying this record
-     * @return string
+     * Initialize arguments.
      */
-    public function render($record, $table, $identifier = 'title')
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'record' => $record,
-                'table' => $table,
-                'identifier' => $identifier
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('record', 'int', 'The uid of the record to remove.', true);
+        $this->registerArgument('table', 'string', 'The table name for the new record.', true);
     }
 
     /**
-     * @param array $arguments
-     * @param callable $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $record = $arguments['record'];
-        $table = $arguments['table'];
-        $identifier = $arguments['identifier'];
+        $record = $this->arguments['record'];
+        $table = $this->arguments['table'];
 
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $icon = $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
 
         $urlParameters = [
             'cmd[' . $table . '][' . $record . '][delete]' => 1,
@@ -65,12 +49,20 @@ class RemoveCoreRecordViewHelper extends AbstractViewHelper implements Compilabl
         ];
         $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
 
+        if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
+            $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
+            $overlayTitle = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title'));
+        } else {
+            $title = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete'));
+            $overlayTitle = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title'));
+        }
+
         return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
             . ' data-severity="warning"'
-            . ' title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete')) . '"'
-            . ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
+            . ' title="' . $title . '"'
+            . ' data-title="' . $overlayTitle . '"'
             . ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'backend_module', [$record])) . '" '
             . ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
-            . '>' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+            . '>' . $icon . '</a>';
     }
 }

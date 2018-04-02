@@ -6,14 +6,12 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays a 'Delete record' button with sprite icon to remove record
  */
-class DisableRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+class DisableRecordViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -21,40 +19,26 @@ class DisableRecordViewHelper extends AbstractViewHelper implements CompilableIn
     protected $escapeOutput = false;
 
     /**
-     * Returns a URL to link to hide/unhide element
-     *
-     * @param AbstractDomainObject $object Object to hide
-     * @param string $table The name of the table of the object
-     * @param string $returnUrl The url to return to after hiding record
-     * @param string $disableField $field with disable flag, default hidden (but in fe_user table for example it's "disable")
-     * @return string
+     * Initialize arguments.
      */
-    public function render(AbstractDomainObject $object, $table, $returnUrl, $disableField = 'hidden')
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'object' => $object,
-                'table' => $table,
-                'returnUrl' => $returnUrl,
-                'disableField' => $disableField
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('object', 'mixed', 'The object to hide.', true);
+        $this->registerArgument('table', 'string', 'The table name of the record to disable.', true);
+        $this->registerArgument('returnUrl', 'string', 'The return url.', true);
+        $this->registerArgument('disableField', 'string', 'The field containing the disable state.', false, 'hidden');
     }
 
     /**
-     * @param array $arguments
-     * @param callable|\Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         /** @var AbstractDomainObject $object */
-        $object = $arguments['object'];
-        $table = $arguments['table'];
-        $disableField = $arguments['disableField'];
+        $object = $this->arguments['object'];
+        $table = $this->arguments['table'];
+        $disableField = $this->arguments['disableField'];
 
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

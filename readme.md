@@ -1,10 +1,11 @@
 # backend_module
 
-This TYPO3 extension provides view helpers and traits as a foundation to quickly build TYPO3 backend modules.
+This TYPO3 extension provides view helpers and traits as a foundation to quickly build TYPO3 backend modules compatible with TYPO3 7 LTS and TYPO3 8 LTS.
 
 ## Change log
 
 ### Version dev-master
+- Register arguments of view helpers
 - Add traits UidAware, PidAware, Hideable, Deletable and Timestampable to easyly add TYPO3 specific properties to domain models. Deprecate old traits.
 - Require typo3/cms-core instead of typo3/minimal
 

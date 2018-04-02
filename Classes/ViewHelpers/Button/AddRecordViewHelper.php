@@ -5,14 +5,14 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays a 'Add record' button with default icon to add record
  */
-class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+class AddRecordViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -20,38 +20,25 @@ class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterf
     protected $escapeOutput = false;
 
     /**
-     * Returns a URL to link to FormEngine
-     *
-     * @param string $table The name of the table to create a new object
-     * @param int $pid The pid to create the new record
-     * @param string $returnUrl The url to return to after creating new record
-     * @return string
+     * Initialize arguments.
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
-    public function render($table, $pid, $returnUrl)
+    public function initializeArguments()
     {
-        return static::renderStatic(
-            [
-                'table' => $table,
-                'pid' => $pid,
-                'returnUrl' => $returnUrl
-            ],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        parent::initializeArguments();
+        $this->registerArgument('table', 'string', 'The table name of the new record.', true);
+        $this->registerArgument('pid', 'int', 'The pid of the new record.', true);
+        $this->registerArgument('returnUrl', 'string', 'The return url.', true);
     }
 
     /**
-     * @param array $arguments
-     * @param callable $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $pid = $arguments['pid'];
-        $table = $arguments['table'];
-        $returnUrl = $arguments['returnUrl'];
+        $pid = $this->arguments['pid'];
+        $table = $this->arguments['table'];
+        $returnUrl = $this->arguments['returnUrl'];
         $parameters = [
             rawurldecode('edit[' . $table . '][' . $pid . ']') => 'new',
             'returnUrl' => rawurldecode($returnUrl)
@@ -59,10 +46,14 @@ class AddRecordViewHelper extends AbstractViewHelper implements CompilableInterf
 
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
+        $icon = $iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render();
         $url = BackendUtility::getModuleUrl('record_edit', $parameters);
+        if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
+            $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'));
+        } else {
+            $title = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:newRecordGeneral'));
+        }
 
-        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:newRecordGeneral')) . '">'
-            . $iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
+        return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $icon . '</a>';
     }
 }
