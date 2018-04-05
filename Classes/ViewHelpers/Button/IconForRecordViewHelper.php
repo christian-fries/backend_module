@@ -34,7 +34,8 @@ class IconForRecordViewHelper extends AbstractBackendViewHelper
         parent::initializeArguments();
         $this->registerArgument('table', 'string', 'The table name of the record.', true);
         $this->registerArgument('uid', 'int', 'The uid of the record.', true);
-        $this->registerArgument('enableContextMenu', 'bool', 'Wheter or not the context menu should be opend when clicking the icon.', false, true);
+        $this->registerArgument('enableContextMenu', 'bool', 'Whether or not the context menu should be opend when clicking the icon.', false, true);
+        $this->registerArgument('enableClickMenu', 'bool', 'Whether or not the context menu should be opend when clicking the icon.', false, true);
     }
 
     /**

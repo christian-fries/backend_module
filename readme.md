@@ -4,6 +4,9 @@ This TYPO3 extension provides view helpers and traits as a foundation to quickly
 
 ## Change log
 
+### Version 0.9.1
+- Register missing argument in IconForRecordViewHelper
+
 ### Version 0.9.0
 - Register arguments of view helpers
 - Add traits UidAware, PidAware, Hideable, Deletable and Timestampable to easyly add TYPO3 specific properties to domain models. Deprecate old traits.
