@@ -1,5 +1,8 @@
 # Change log
 
+## dev-master
+- Adjust php-cs-fixer configuration
+
 ## Version 0.9.1
 - Register missing argument in IconForRecordViewHelper
 
