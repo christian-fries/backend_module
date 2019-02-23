@@ -2,6 +2,11 @@
   "name": "chf/backend-module",
   "type": "typo3-cms-extension",
   "description": "A convenience extension for quickly creating TYPO3 backend modules",
+  "keywords": [
+    "typo3",
+    "backend",
+    "module"
+  ],
   "authors": [
     {
       "name": "Christian Fries",
