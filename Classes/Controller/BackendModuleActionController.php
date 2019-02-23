@@ -103,6 +103,7 @@ class BackendModuleActionController extends ActionController
      * Set this flag to true to display a button linking to the extension configuration
      *
      * @var bool
+     * @deprecated This option cannot be used in TYPO3 9 anymore. Will be removed in next release.
      */
     protected $showConfigurationButton = false;
 
@@ -230,7 +231,7 @@ class BackendModuleActionController extends ActionController
             }
         }
 
-        if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin()) {
+        if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin() && version_compare(TYPO3_branch, '9.0', '<')) {
             $configurationLink = BackendUtility::getModuleUrl('tools_ExtensionmanagerExtensionmanager', [
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
                     'action' => 'showConfigurationForm',

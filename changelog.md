@@ -1,6 +1,7 @@
 # Change log
 
 ## dev-master
+- Don't show configuration button in TYPO3 9
 - Adjust php-cs-fixer configuration
 
 ## Version 0.9.1
