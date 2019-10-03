@@ -14,6 +14,7 @@ namespace CHF\BackendModule\Controller;
  ***/
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\UriBuilder as BeUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -21,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -30,7 +32,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * BackendModule Controller
@@ -100,14 +101,6 @@ class BackendModuleActionController extends ActionController
     protected $moduleName;
 
     /**
-     * Set this flag to true to display a button linking to the extension configuration
-     *
-     * @var bool
-     * @deprecated This option cannot be used in TYPO3 9 anymore. Will be removed in next release.
-     */
-    protected $showConfigurationButton = false;
-
-    /**
      * @var PageRenderer
      */
     protected $pageRenderer;
@@ -126,7 +119,7 @@ class BackendModuleActionController extends ActionController
         // Show flash message if no storage pid defined
         if ($this->pageUid == 0) {
             $message = GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.description'),
                 $this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.pid.title'),
                 FlashMessage::WARNING,
@@ -143,6 +136,7 @@ class BackendModuleActionController extends ActionController
 
     /**
      * @param ViewInterface $view
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -199,6 +193,7 @@ class BackendModuleActionController extends ActionController
 
     /**
      * Create the panel of buttons for the backend module
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     protected function createButtons()
     {
@@ -231,8 +226,10 @@ class BackendModuleActionController extends ActionController
             }
         }
 
-        if ($this->extKey && $this->moduleName && $this->showConfigurationButton && $this->getBackendUser()->isAdmin() && version_compare(TYPO3_branch, '9.0', '<')) {
-            $configurationLink = BackendUtility::getModuleUrl('tools_ExtensionmanagerExtensionmanager', [
+        if ($this->extKey && $this->moduleName && $this->getBackendUser()->isAdmin() && version_compare(TYPO3_branch, '9.0', '<')) {
+            /** @var BeUriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+            $configurationLink = $uriBuilder->buildUriFromRoute('tools_ExtensionmanagerExtensionmanager', [
                 'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
                     'action' => 'showConfigurationForm',
                     'controller' => 'Configuration',
@@ -264,6 +261,7 @@ class BackendModuleActionController extends ActionController
      * @param string $iconIdentifier Name of the icon to use. If no icon is defined, the icon of the record will be used.
      * @param array $dataAttributes The data attributes to add to the button
      * @return array|null
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     protected function createNewRecordButton($table, $title, $displayConditions = null, $returnParameter = [], $returnUrl = null, $iconIdentifier = 'actions-document-new', $dataAttributes = [])
     {
@@ -284,7 +282,9 @@ class BackendModuleActionController extends ActionController
             $returnUrl = $this->getReturnUrl($returnParameter);
         }
 
-        $url =  BackendUtility::getModuleUrl('record_edit', [
+        /** @var BeUriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+        $url = $uriBuilder->buildUriFromRoute('record_edit', [
             'edit[' . $table . '][' . $this->pageUid . ']' => 'new',
             'returnUrl' => $returnUrl
         ]);
@@ -400,10 +400,14 @@ class BackendModuleActionController extends ActionController
         }
 
         $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken($this->moduleName);
-        $url = BackendUtility::getModuleUrl('record_edit', [
+
+        /** @var BeUriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+        $url = $uriBuilder->buildUriFromRoute('record_edit', [
             'edit[' . $table . '][' . $this->pageUid . ']' => 'new',
             'returnUrl' => $returnUrl
         ]);
+
         HttpUtility::redirect($url);
     }
 
@@ -420,10 +424,14 @@ class BackendModuleActionController extends ActionController
         }
 
         $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken($this->moduleName);
-        $url = BackendUtility::getModuleUrl('record_edit', [
+
+        /** @var BeUriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+        $url = $uriBuilder->buildUriFromRoute('record_edit', [
             'edit[' . $table . '][' . $recordId . ']' => 'edit',
             'returnUrl' => $returnUrl
         ]);
+
         HttpUtility::redirect($url);
     }
 
@@ -447,6 +455,7 @@ class BackendModuleActionController extends ActionController
      * Get return url based on the current controller context
      *
      * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function getControllerContextBasedReturnUrl()
     {
@@ -459,7 +468,10 @@ class BackendModuleActionController extends ActionController
                 'controller' => $currentRequest->getControllerName()
             ];
         }
-        $returnUrl = BackendUtility::getModuleUrl($this->moduleName, $parameter);
+
+        /** @var BeUriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+        $returnUrl = $uriBuilder->buildUriFromRoute($this->moduleName, $parameter);
 
         return $returnUrl;
     }
@@ -469,10 +481,13 @@ class BackendModuleActionController extends ActionController
      *
      * @param $parameter
      * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function getReturnUrl($parameter)
     {
-        $returnUrl = BackendUtility::getModuleUrl($this->moduleName, $parameter);
+        /** @var BeUriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
+        $returnUrl = $uriBuilder->buildUriFromRoute($this->moduleName, $parameter);
 
         return $returnUrl;
     }
