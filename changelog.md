@@ -1,5 +1,8 @@
 # Change log
 
+## dev-master
+- Allow installation on TYPO3 CMS 10
+
 ## Version 1.0.0
 - Support for TYPO3 7 LTS, TYPO3 8 LTS and TYPO3 9 LTS
 - Don't show configuration button in TYPO3 9
