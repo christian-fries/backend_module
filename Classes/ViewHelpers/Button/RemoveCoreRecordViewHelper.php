@@ -13,13 +13,13 @@ namespace CHF\BackendModule\ViewHelpers\Button;
  *
  ***/
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Displays a 'Delete record' button with sprite icon to remove record
@@ -43,6 +43,7 @@ class RemoveCoreRecordViewHelper extends AbstractViewHelper
 
     /**
      * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function render()
     {
@@ -59,7 +60,9 @@ class RemoveCoreRecordViewHelper extends AbstractViewHelper
             'uPT' => 1,
             'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
         ];
-        $url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $url = $uriBuilder->buildUriFromRoute('tce_db', $urlParameters);
 
         if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
             $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));

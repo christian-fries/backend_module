@@ -61,6 +61,7 @@ trait Timestampable
      * Get crdate as datetime
      *
      * @return \DateTime
+     * @throws \Exception
      */
     public function getCreatedAt()
     {
@@ -84,6 +85,7 @@ trait Timestampable
      * Get tstamp as datetime
      *
      * @return \DateTime
+     * @throws \Exception
      */
     public function getUpdatedAt()
     {
