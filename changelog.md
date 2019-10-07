@@ -2,7 +2,7 @@
 
 ## dev-master
 - Allow installation on TYPO3 CMS 10
-- Replace deprecations & optimize existing code
+- Drop support for TYPO3 CMS 7 & 8
 
 ## Version 1.0.0
 - Support for TYPO3 7 LTS, TYPO3 8 LTS and TYPO3 9 LTS
