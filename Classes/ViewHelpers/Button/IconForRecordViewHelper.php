@@ -17,7 +17,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
@@ -72,11 +71,7 @@ class IconForRecordViewHelper extends AbstractBackendViewHelper
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $iconTag = '<a title="id=' . $uid . '"';
             if ($enableContextMenu) {
-                if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
-                    $iconTag .= ' class="t3js-contextmenutrigger" data-table="' . $table . '" data-uid="' . $uid . '"';
-                } else {
-                    $iconTag .= ' onclick="TYPO3.ClickMenu.show(\'' . $table . '\', \'' . $uid . '\', \'1\', \'\', \'\', \'\'); return false;"';
-                }
+                $iconTag .= ' class="t3js-contextmenutrigger" data-table="' . $table . '" data-uid="' . $uid . '"';
             }
             $icon = $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
             $iconTag .= '><span>' . $icon . '</span></a>';

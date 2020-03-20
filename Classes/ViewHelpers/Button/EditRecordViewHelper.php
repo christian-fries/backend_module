@@ -64,11 +64,7 @@ class EditRecordViewHelper extends AbstractViewHelper
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = $uriBuilder->buildUriFromRoute('record_edit', $parameters);
 
-        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
-            $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
-        } else {
-            $title = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:edit'));
-        }
+        $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
 
         return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $icon . '</a>';
     }
