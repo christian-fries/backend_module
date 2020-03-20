@@ -207,8 +207,8 @@ class BackendModuleActionController extends ActionController
                     ->setIcon($button['icon'])
                     ->setDataAttributes($button['dataAttributes']);
 
-            if ($button['type'] === 'clipboard') {
-                $viewButton->setOnClick($button['onClick']);
+            if (array_key_exists('classes', $button)) {
+                $viewButton->setClasses($button['classes']);
             }
 
             if ($button['displayConditions'] === null ||
@@ -316,21 +316,18 @@ class BackendModuleActionController extends ActionController
 
         if (!empty($elFromTable)) {
             $url = $clipBoard->pasteUrl('', $this->pageUid);
-            $onClick = 'return ' . $clipBoard->confirmMsg(
-                'pages',
-                BackendUtility::getRecord('pages', $this->pageUid),
-                    'into',
-                $elFromTable
-            );
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteInto');
             $icon = $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL);
+
+            $dataAttributes['content'] = $clipBoard->confirmMsgText('pages', BackendUtility::getRecord('pages', $this->pageUid), 'into', $elFromTable);
+            $dataAttributes['title'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
 
             return [
                 'type' => 'clipboard',
                 'href' => $url,
-                'onClick' => $onClick,
                 'title' => $title,
                 'icon' => $icon,
+                'classes' => 't3js-modal-trigger',
                 'dataAttributes' => $dataAttributes,
                 'displayConditions' => $displayConditions
             ];
