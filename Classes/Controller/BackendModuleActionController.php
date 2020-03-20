@@ -456,9 +456,7 @@ class BackendModuleActionController extends ActionController
     {
         /** @var BeUriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
-        $returnUrl = $uriBuilder->buildUriFromRoute($this->moduleName, $parameter);
-
-        return $returnUrl;
+        return (string) $uriBuilder->buildUriFromRoute($this->moduleName, $parameter);
     }
 
     /**
