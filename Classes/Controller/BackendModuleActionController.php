@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -147,11 +146,7 @@ class BackendModuleActionController extends ActionController
             $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 
             $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
-            if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 8007000) {
-                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-            } else {
-                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
-            }
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
