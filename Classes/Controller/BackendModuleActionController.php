@@ -225,29 +225,6 @@ class BackendModuleActionController extends ActionController
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, $key);
             }
         }
-
-        if ($this->extKey && $this->moduleName && $this->getBackendUser()->isAdmin() && version_compare(TYPO3_branch, '9.0', '<')) {
-            /** @var BeUriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(BeUriBuilder::class);
-            $configurationLink = $uriBuilder->buildUriFromRoute('tools_ExtensionmanagerExtensionmanager', [
-                'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                    'action' => 'showConfigurationForm',
-                    'controller' => 'Configuration',
-                    'extension' => ['key' => $this->extKey]
-                ]
-            ]);
-
-            $returnUrl = 'index.php?M=' . $this->moduleName . '&id=' . $this->pageUid . $this->getToken('tools_ExtensionmanagerExtensionmanager');
-
-            $configurationButton = $buttonBar->makeLinkButton()
-                ->setHref($configurationLink . '&returnUrl=' . $returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend_module/Resources/Private/Language/locallang.xlf:configuration.label'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon(
-                    'actions-system-extension-configure',
-                    Icon::SIZE_SMALL
-                ));
-            $buttonBar->addButton($configurationButton, ButtonBar::BUTTON_POSITION_RIGHT);
-        }
     }
 
     /**
