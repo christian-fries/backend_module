@@ -3,6 +3,7 @@
 ## dev-master
 - Allow installation on TYPO3 CMS 10
 - Drop support for TYPO3 CMS 7 & 8
+- Remove deprecated traits `HiddenTrait`, `PidTrait`, `TimestampableTrait` and `UidTrait`
 
 ## Version 1.0.0
 - Support for TYPO3 7 LTS, TYPO3 8 LTS and TYPO3 9 LTS
