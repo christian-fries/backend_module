@@ -322,7 +322,7 @@ class BackendModuleActionController extends ActionController
                     'into',
                 $elFromTable
             );
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:clip_pasteInto');
+            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteInto');
             $icon = $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL);
 
             return [

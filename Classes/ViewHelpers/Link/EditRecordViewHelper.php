@@ -58,7 +58,7 @@ class EditRecordViewHelper extends AbstractViewHelper
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = $uriBuilder->buildUriFromRoute('record_edit', $parameters);
 
-        $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
+        $title = htmlspecialchars(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit'));
 
         return '<a href="' . $url . '" title="' . $title . '">' . $this->renderChildren() . '</a>';
     }
