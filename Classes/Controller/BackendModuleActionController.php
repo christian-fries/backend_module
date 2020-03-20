@@ -157,7 +157,6 @@ class BackendModuleActionController extends ActionController
             $this->createButtons();
         }
 
-        $this->view->assign('T3_THIS_LOCATION', urlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
         $this->view->assign('storagePid', $this->pageUid);
 
         $this->view->assign('returnUrl', $this->getControllerContextBasedReturnUrl());
