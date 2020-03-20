@@ -1,7 +1,7 @@
 # TYPO3 Extension ``backend_module``
 
 This TYPO3 extension provides view helpers and traits as a foundation to quickly build TYPO3 backend modules compatible 
-with TYPO3 7 LTS, TYPO3 8 LTS, TYPO3 9 LTS and TYPO3 10.x.
+with TYPO3 9 LTS and TYPO3 10.3.
 
 ## Installation
 
@@ -16,7 +16,7 @@ Check out the TYPO3 extension [EXT:teaser_manager](https://github.com/christian-
 
 ## Supported versions
 
-This extension supports TYPO3 7 LTS, TYPO3 8 LTS, TYPO3 9 LTS and TYPO3 10 LTS.
+This extension supports TYPO3 9 LTS and TYPO3 10 LTS.
 
 ## Change log
 
